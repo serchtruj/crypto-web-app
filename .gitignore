@@ -1,0 +1,30 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# https://www.brcline.com/blog/simple-git-ignore-file-for-nodejs
+
+# dependencies
+client/node_modules
+client/.pnp
+client/.pnp.js
+server/node_modules
+
+# testing
+client/coverage
+
+# production
+client/build
+server/build
+
+# misc
+client/.DS_Store
+client/.env.local
+client/.env.development.local
+client/.env.test.local
+client/.env.production.local
+server/.nyc
+server/.env
+server/.DS_Store
+
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+server/npm-debug.log
