@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import createWebSocket from './socket';
+import axios from 'axios'
 
 const App = () => {
   const [tickerData, setTickerData] = useState([
@@ -17,6 +18,7 @@ const App = () => {
     }
   ]);
   const [websocketError, setWebsocketError] = useState(false);
+
   useEffect(() => {
     const socket = createWebSocket(
       (data) => {
@@ -43,6 +45,26 @@ const App = () => {
       socket.close();
     };
   }, []);
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/v1/cryptocurrencies/btc,eth,ada', {
+      'Content-Type': 'application/json'
+    })
+      .then(res => {
+        const receivedData = res.data.data;
+        setTickerData(prevData => {
+          const newData = [...prevData]
+          return receivedData.map((item) => {
+            const existCryptoData = newData.filter(cryp => cryp.symbol.includes(item.symbol))
+            return {
+              ...item,
+              ...existCryptoData
+            }
+          })
+        })
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }, [])
 
   return (
     <div>
